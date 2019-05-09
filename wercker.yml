@@ -16,6 +16,26 @@ build-domain-in-home-image:
         name: Install curl and docker
         code: apk --no-cache add curl docker
     - script:
+        name: Build logging and metrics exporters
+        code: |
+              echo ' - logging exporter...'
+              wget -O weblogic-logging-exporter-0.1.jar \
+                https://github.com/oracle/weblogic-logging-exporter/releases/download/v0.1/weblogic-logging-exporter-0.1.jar
+
+              wget -O snakeyaml-1.23.jar \
+                http://repo1.maven.org/maven2/org/yaml/snakeyaml/1.23/snakeyaml-1.23.jar
+
+              echo ' - metrics exporter...'
+              git clone https://github.com/oracle/weblogic-monitoring-exporter
+              cd weblogic-monitoring-exporter
+              mvn clean install
+              cd webapp
+              mvn clean package -Dconfiguration=../../exporter-config.yaml
+              cd ../..
+              cp weblogic-monitoring-exporter/webapp/target/wls-exporter.war \
+                wls-exporter.war
+
+    - script:
         name: Build docker image
         code: |
               export APPLICATION_NAME=rjeberha-summit-weblogic

@@ -26,6 +26,7 @@ cmo.setName(username)
 cmo.setPassword(password)
 
 cd("/Servers/AdminServer")
+admin=cmo
 cmo.setListenPort(admin_port)
 cmo.setName(admin_server_name)
 nap=create("T3Channel", 'NetworkAccessPoint')
@@ -87,13 +88,26 @@ set('InitialCapacity', int(dsinitialcapacity))
 assign('JDBCSystemResource', dsname, 'Target', admin_server_name)
 assign('JDBCSystemResource', dsname, 'Target', cluster_name)
 
-# Deploy application
+# Deploy applications
 # ==========================
 cd("/")
 dep=create("testwebapp", "AppDeployment")
 dep.setTargets(jarray.array([cl],TargetMBean))
 dep.setModuleType("war")
 dep.setSourcePath("wlsdeploy/applications/opdemo.war")
+
+dep=create("wls-exporter", "AppDeployment")
+dep.setTargets(jarray.array([admin, cl],TargetMBean))
+dep.setModuleType("war")
+dep.setSourcePath("wlsdeploy/applications/wls-exporter.war")
+
+lib=create("logging-exporter", "Library")
+lib.setTargets(jarray.array([admin, cl],TargetMBean))
+lib.setSourcePath("wlsdeploy/libraries/weblogic-logging-exporter-0.1.jar")
+
+lib=create("snakeyaml", "Library")
+lib.setTargets(jarray.array([admin, cl],TargetMBean))
+lib.setSourcePath("wlsdeploy/libraries/snakeyaml-1.23.jar")
 
 writeDomain(domain_path)
 closeTemplate()

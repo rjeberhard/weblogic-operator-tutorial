@@ -1,0 +1,10 @@
+publishHost:  elasticsearch.default
+publishPort:  9200
+domainUID:  summit-domain1
+weblogicLoggingExporterEnabled: true
+weblogicLoggingIndexName:  wls
+weblogicLoggingExporterSeverity:  Notice
+weblogicLoggingExporterBulkSize: 1
+weblogicLoggingExporterFilters:
+- filterExpression:  'severity > Warning'
+

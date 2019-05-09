@@ -4,7 +4,17 @@ FROM ${SOURCEIMAGE}
 USER root
 COPY target/opdemo.war $DOMAIN_HOME/wlsdeploy/applications/
 
+COPY wls-exporter.war $DOMAIN_HOME/wlsdeploy/applications/
+COPY weblogic-logging-exporter-0.1.jar $DOMAIN_HOME/wlsdeploy/libraries/
+COPY snakeyaml-1.23.jar $DOMAIN_HOME/wlsdeploy/libraries/
+
+COPY WebLogicLoggingExporter.yaml $DOMAIN_HOME/config/WebLogicLoggingExporter.yaml
+
 RUN chown -R oracle:oracle $DOMAIN_HOME/wlsdeploy/applications/ && \
-    chmod -R a+xwr $DOMAIN_HOME/wlsdeploy/applications/
+    chmod -R a+xwr $DOMAIN_HOME/wlsdeploy/applications/ && \
+    chown -R oracle:oracle $DOMAIN_HOME/wlsdeploy/libraries/ && \
+    chmod -R a+xwr $DOMAIN_HOME/wlsdeploy/libraries/ && \
+    chown oracle:oracle $DOMAIN_HOME/config/WebLogicLoggingExporter.yaml && \
+    chmod a+xwr $DOMAIN_HOME/config/WebLogicLoggingExporter.yaml
 
 WORKDIR ${DOMAIN_HOME}
