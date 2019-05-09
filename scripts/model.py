@@ -3,7 +3,7 @@ from weblogic.management.configuration import TargetMBean
 
 wl_home                  = os.environ.get("WL_HOME")
 domain_path              = os.environ.get("DOMAIN_HOME")
-domain_name              = "sample-domain1"
+domain_name              = "summit-domain1"
 username                 = "weblogic"
 password                 = "welcome1"
 admin_server_name        = "admin-server"

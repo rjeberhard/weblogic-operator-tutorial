@@ -2,7 +2,7 @@
 # ---------------
 FROM store/oracle/weblogic:12.2.1.3
 
-ENV DOMAIN_NAME="sample-domain1"
+ENV DOMAIN_NAME="summit-domain1"
 ENV DOMAIN_HOME="/u01/oracle/user_projects/domains/${DOMAIN_NAME}"
 
 USER root
