@@ -101,13 +101,9 @@ dep.setTargets(jarray.array([admin, cl],TargetMBean))
 dep.setModuleType("war")
 dep.setSourcePath("wlsdeploy/applications/wls-exporter.war")
 
-lib=create("logging-exporter", "Library")
-lib.setTargets(jarray.array([admin, cl],TargetMBean))
-lib.setSourcePath("wlsdeploy/libraries/weblogic-logging-exporter-0.1.jar")
-
-lib=create("snakeyaml", "Library")
-lib.setTargets(jarray.array([admin, cl],TargetMBean))
-lib.setSourcePath("wlsdeploy/libraries/snakeyaml-1.23.jar")
+suc=create("LoggingExporterStartupClass", "StartupClass")
+suc.setClassName("weblogic.logging.exporter.Startup")
+suc.setTargets(jarray.array([admin, cl],TargetMBean))
 
 writeDomain(domain_path)
 closeTemplate()

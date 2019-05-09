@@ -12,15 +12,15 @@ RUN mkdir -p $DOMAIN_HOME && \
     chmod -R a+xwr $DOMAIN_HOME && \
     mkdir ${DOMAIN_HOME}/docker-build-tmp && \
     mkdir -p $DOMAIN_HOME/wlsdeploy/applications/ \
-    mkdir -p $DOMAIN_HOME/wlsdeploy/libraries/
+    mkdir -p $DOMAIN_HOME/lib/
 
 COPY scripts/* ${DOMAIN_HOME}/docker-build-tmp/
 
 COPY target/opdemo.war $DOMAIN_HOME/wlsdeploy/applications/
 
 COPY wls-exporter.war $DOMAIN_HOME/wlsdeploy/applications/
-COPY weblogic-logging-exporter-0.1.jar $DOMAIN_HOME/wlsdeploy/libraries/
-COPY snakeyaml-1.23.jar $DOMAIN_HOME/wlsdeploy/libraries/
+COPY weblogic-logging-exporter-0.1.jar $DOMAIN_HOME/lib/
+COPY snakeyaml-1.23.jar $DOMAIN_HOME/lib/
 
 RUN wlst.sh -skipWLSModuleScanning -loadProperties ${DOMAIN_HOME}/docker-build-tmp/datasource.properties \
       ${DOMAIN_HOME}/docker-build-tmp/model.py
