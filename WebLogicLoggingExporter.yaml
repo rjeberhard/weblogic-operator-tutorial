@@ -1,4 +1,4 @@
-publishHost:  elasticsearch.default
+publishHost:  elasticsearch.monitoring
 publishPort:  9200
 domainUID:  summit-domain1
 weblogicLoggingExporterEnabled: true
