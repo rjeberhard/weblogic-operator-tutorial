@@ -1,4 +1,4 @@
-host: summit-domain1-admin-server
+host: localhost
 port: 7001
 metricsNameSnakeCase: true
 queries:
@@ -31,27 +31,8 @@ queries:
       prefix: wls_threadpool_
       key: name
       values: [executeThreadTotalCount, queueLength, stuckThreadCount, hoggingThreadCount]
-  - JMSRuntime:
-      key: name
-      keyName: jmsruntime
-      prefix: wls_jmsruntime_
-      JMSServers:
-        prefix: wls_jms_
-        key: name
-        keyName: jmsserver
-        destinations:
-          prefix: wls_jms_dest_
-          key: name
-          keyName: destination
-
-  - persistentStoreRuntimes:
-      prefix: wls_persistentstore_
-      key: name
   - JDBCServiceRuntime:
       JDBCDataSourceRuntimeMBeans:
         prefix: wls_datasource_
         key: name
-  - JTARuntime:
-      prefix: wls_jta_
-      key: name
 

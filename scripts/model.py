@@ -13,7 +13,7 @@ t3_public_address        = "kubernetes"
 cluster_name             = "cluster-1"
 number_of_ms             = 5
 managed_server_name_base = "managed-server"
-managed_server_port      = 8001
+managed_server_port      = 7001
 
 readTemplate(wl_home + "/common/templates/wls/wls.jar")
 
