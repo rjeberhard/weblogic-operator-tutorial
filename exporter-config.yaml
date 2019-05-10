@@ -1,5 +1,5 @@
 host: localhost
-port: 7001
+port: 8001
 metricsNameSnakeCase: true
 queries:
   - key: name
