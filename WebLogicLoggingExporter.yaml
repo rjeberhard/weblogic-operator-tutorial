@@ -5,6 +5,4 @@ weblogicLoggingExporterEnabled: true
 weblogicLoggingIndexName:  wls
 weblogicLoggingExporterSeverity:  Notice
 weblogicLoggingExporterBulkSize: 1
-weblogicLoggingExporterFilters:
-- filterExpression:  'severity > Warning'
 
