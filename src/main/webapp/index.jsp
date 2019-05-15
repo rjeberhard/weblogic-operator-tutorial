@@ -14,6 +14,7 @@ import="java.net.InetAddress"%>
 <html>
 <body>
 	<h1>WebLogic Operator Demo App - MBean properties:</h1><br>
+	<h2>SECOND version of application</h2>
 	<%
 		String jdbcDataSourceName = request.getParameter("dsname");
 		StringBuffer message = new StringBuffer();
