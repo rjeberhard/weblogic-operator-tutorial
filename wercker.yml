@@ -36,27 +36,24 @@ build-domain-in-home-image:
                 wls-exporter.war
 
     - script:
-        name: Build docker image
+        name: Build and push docker image
         code: |
               export APPLICATION_NAME=rjeberha-summit-weblogic
               docker login $REGION.ocir.io -u $TENANCY/$OCI_REGISTRY_USERNAME -p $OCI_REGISTRY_PASSWORD
-              if docker pull $REGION.ocir.io/$TENANCY/$APPLICATION_NAME:latest; then
+              if docker pull $REGION.ocir.io/$TENANCY/$APPLICATION_NAME:1.0; then
                 docker build --file Dockerfile.update \
                     --build-arg SOURCEIMAGE=$REGION.ocir.io/$TENANCY/$APPLICATION_NAME:latest \
                     --force-rm=true \
                     -t $REGION.ocir.io/$TENANCY/$APPLICATION_NAME:$WERCKER_GIT_COMMIT \
-                    -t $REGION.ocir.io/$TENANCY/$APPLICATION_NAME:latest .
+                    -t $REGION.ocir.io/$TENANCY/$APPLICATION_NAME:2.0 .
+                docker push $REGION.ocir.io/$TENANCY/$APPLICATION_NAME:$WERCKER_GIT_COMMIT
+                docker push $REGION.ocir.io/$TENANCY/$APPLICATION_NAME:2.0
               else
                 docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
                 docker build --file Dockerfile.create \
                     --force-rm=true \
                     -t $REGION.ocir.io/$TENANCY/$APPLICATION_NAME:$WERCKER_GIT_COMMIT \
-                    -t $REGION.ocir.io/$TENANCY/$APPLICATION_NAME:latest .
+                    -t $REGION.ocir.io/$TENANCY/$APPLICATION_NAME:1.0 .
+                docker push $REGION.ocir.io/$TENANCY/$APPLICATION_NAME:$WERCKER_GIT_COMMIT
+                docker push $REGION.ocir.io/$TENANCY/$APPLICATION_NAME:1.0
               fi
-    - script:
-        name: Push the image to a repository
-        code: |
-              export APPLICATION_NAME=rjeberha-summit-weblogic
-              docker login $REGION.ocir.io -u $TENANCY/$OCI_REGISTRY_USERNAME -p $OCI_REGISTRY_PASSWORD
-              docker push $REGION.ocir.io/$TENANCY/$APPLICATION_NAME:$WERCKER_GIT_COMMIT
-              docker push $REGION.ocir.io/$TENANCY/$APPLICATION_NAME:latest
