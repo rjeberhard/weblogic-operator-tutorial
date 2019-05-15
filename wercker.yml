@@ -42,7 +42,7 @@ build-domain-in-home-image:
               docker login $REGION.ocir.io -u $TENANCY/$OCI_REGISTRY_USERNAME -p $OCI_REGISTRY_PASSWORD
               if docker pull $REGION.ocir.io/$TENANCY/$APPLICATION_NAME:1.0; then
                 docker build --file Dockerfile.update \
-                    --build-arg SOURCEIMAGE=$REGION.ocir.io/$TENANCY/$APPLICATION_NAME:latest \
+                    --build-arg SOURCEIMAGE=$REGION.ocir.io/$TENANCY/$APPLICATION_NAME:1.0 \
                     --force-rm=true \
                     -t $REGION.ocir.io/$TENANCY/$APPLICATION_NAME:$WERCKER_GIT_COMMIT \
                     -t $REGION.ocir.io/$TENANCY/$APPLICATION_NAME:2.0 .
