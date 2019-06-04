@@ -14,7 +14,7 @@ build-domain-in-home-image:
   steps:
     - script:
         name: Install curl, docker, git, maven and java
-        code: apk --no-cache add curl docker git maven openjdk8
+        code: apk --no-cache add curl docker git maven openjdk8 unzip
 #    - script:
 #        name: Build logging and metrics exporters
 #        code: |
@@ -43,7 +43,7 @@ build-domain-in-home-image:
                 https://github.com/oracle/weblogic-deploy-tooling/releases/download/weblogic-deploy-tooling-0.24/weblogic-deploy.zip
               mkdir wdt
               cd wdt
-              jar xf ../weblogic-deploy.zip
+              unzip ../weblogic-deploy.zip
               cd ..
 
     - script:
