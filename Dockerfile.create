@@ -2,8 +2,9 @@
 # ---------------
 FROM store/oracle/weblogic:12.2.1.3
 
-ENV DOMAIN_NAME="summit-domain1"
-ENV DOMAIN_HOME="/u01/oracle/user_projects/domains/${DOMAIN_NAME}"
+ENV DOMAIN_NAME="deltek-enterprise2"
+ENV DOMAIN_PARENT="/u01/oracle/user_projects/domains"
+ENV DOMAIN_HOME="${DOMAIN_PARENT}/${DOMAIN_NAME}"
 
 USER root
 
@@ -15,17 +16,22 @@ RUN mkdir -p $DOMAIN_HOME && \
     mkdir -p $DOMAIN_HOME/lib/
 
 COPY scripts/* ${DOMAIN_HOME}/docker-build-tmp/
+COPY wdt/* ${DOMAIN_HOME}/docker-build-tmp/
 
 COPY target/opdemo.war $DOMAIN_HOME/wlsdeploy/applications/
 
-COPY wls-exporter.war $DOMAIN_HOME/wlsdeploy/applications/
-COPY weblogic-logging-exporter-0.1.jar $DOMAIN_HOME/lib/
-COPY snakeyaml-1.23.jar $DOMAIN_HOME/lib/
+# COPY wls-exporter.war $DOMAIN_HOME/wlsdeploy/applications/
+# COPY weblogic-logging-exporter-0.1.jar $DOMAIN_HOME/lib/
+# COPY snakeyaml-1.23.jar $DOMAIN_HOME/lib/
 
-RUN wlst.sh -skipWLSModuleScanning -loadProperties ${DOMAIN_HOME}/docker-build-tmp/datasource.properties \
-      ${DOMAIN_HOME}/docker-build-tmp/model.py
+# RUN wlst.sh -skipWLSModuleScanning -loadProperties ${DOMAIN_HOME}/docker-build-tmp/datasource.properties \
+#       ${DOMAIN_HOME}/docker-build-tmp/model.py
 
-COPY WebLogicLoggingExporter.yaml $DOMAIN_HOME/config/WebLogicLoggingExporter.yaml
+RUN ${DOMAIN_HOME}/docker-build-tmp/wdt/weblogic-deploy\bin\createDomain.sh \
+    -oracle_home /u01/oracle -domain_type WLS -domain_parent ${DOMAIN_PARENT} \
+    -model_file ${DOMAIN_HOME}/docker-build-tmp/discover.yaml
+
+# COPY WebLogicLoggingExporter.yaml $DOMAIN_HOME/config/WebLogicLoggingExporter.yaml
 
 RUN rm -rf ${DOMAIN_HOME}/docker-build-tmp && \
     chown -R oracle:oracle ${DOMAIN_HOME} && \

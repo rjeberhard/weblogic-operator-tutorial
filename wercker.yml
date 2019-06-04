@@ -3,7 +3,7 @@ box: combient/java-mvn
 build:
   steps:
     - script:
-        name: Maven build - MBean Sample application
+        name: Maven build - Deltek application
         code: mvn clean package
 
 build-domain-in-home-image:
@@ -15,30 +15,41 @@ build-domain-in-home-image:
     - script:
         name: Install curl, docker, git, maven and java
         code: apk --no-cache add curl docker git maven openjdk8
+#    - script:
+#        name: Build logging and metrics exporters
+#        code: |
+#              echo ' - logging exporter...'
+#              wget -O weblogic-logging-exporter-0.1.jar \
+#                https://github.com/oracle/weblogic-logging-exporter/releases/download/v0.1/weblogic-logging-exporter-0.1.jar
+#
+#              wget -O snakeyaml-1.23.jar \
+#                http://repo1.maven.org/maven2/org/yaml/snakeyaml/1.23/snakeyaml-1.23.jar
+#
+#              echo ' - metrics exporter...'
+#              git clone https://github.com/oracle/weblogic-monitoring-exporter
+#              cd weblogic-monitoring-exporter
+#              mvn clean install
+#              cd webapp
+#              mvn clean package -Dconfiguration=../../exporter-config.yaml
+#              cd ../..
+#              cp weblogic-monitoring-exporter/webapp/target/wls-exporter.war \
+#                wls-exporter.war
+#
     - script:
-        name: Build logging and metrics exporters
+        name: Get WebLogic Deploy Tooling binaries
         code: |
-              echo ' - logging exporter...'
-              wget -O weblogic-logging-exporter-0.1.jar \
-                https://github.com/oracle/weblogic-logging-exporter/releases/download/v0.1/weblogic-logging-exporter-0.1.jar
-
-              wget -O snakeyaml-1.23.jar \
-                http://repo1.maven.org/maven2/org/yaml/snakeyaml/1.23/snakeyaml-1.23.jar
-
-              echo ' - metrics exporter...'
-              git clone https://github.com/oracle/weblogic-monitoring-exporter
-              cd weblogic-monitoring-exporter
-              mvn clean install
-              cd webapp
-              mvn clean package -Dconfiguration=../../exporter-config.yaml
-              cd ../..
-              cp weblogic-monitoring-exporter/webapp/target/wls-exporter.war \
-                wls-exporter.war
+              echo ' - get WDT...'
+              wget -O weblogic-deploy.zip \
+                https://github.com/oracle/weblogic-deploy-tooling/releases/download/weblogic-deploy-tooling-0.24/weblogic-deploy.zip
+              mkdir wdt
+              cd wdt
+              jar xf ../weblogic-deploy.zip
+              cd ..
 
     - script:
         name: Build and push docker image
         code: |
-              export APPLICATION_NAME=rjeberha-summit-weblogic
+              export APPLICATION_NAME=deltek-enterprise2-weblogic
               docker login $REGION.ocir.io -u $TENANCY/$OCI_REGISTRY_USERNAME -p $OCI_REGISTRY_PASSWORD
               if docker pull $REGION.ocir.io/$TENANCY/$APPLICATION_NAME:1.0; then
                 docker build --file Dockerfile.update \

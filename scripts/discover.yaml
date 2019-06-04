@@ -1,0 +1,71 @@
+domainInfo:
+    AdminPassword: fake1234
+    domainLibraries: [ /u01/oracle/user_projects/domains/deltek-enterprise2/wlsdeploy/domainLibraries/CPLogger.jar ]
+topology:
+#    NMProperties:
+#        JavaHome: 'C:/Oracle/jdk1.8.0_192'
+#        LogFile: 'C:/Oracle/Middleware12.2.1.3/user_projects/domains/domain1/nodemanager/nodemanager.log'
+#        NodeManagerHome: 'C:/Oracle/Middleware12.2.1.3/user_projects/domains/domain1/nodemanager'
+    Server:
+        AdminServer:
+    SecurityConfiguration:
+        NodeManagerPasswordEncrypted: 'fake1234'
+        NodeManagerUsername: system
+        CredentialEncrypted: 'fake1234'
+        Realm:
+            myrealm:
+                Adjudicator:
+                    DefaultAdjudicator:
+                        DefaultAdjudicator:
+                AuthenticationProvider:
+                    DefaultAuthenticator:
+                        DefaultAuthenticator:
+                    DefaultIdentityAsserter:
+                        DefaultIdentityAsserter:
+                            ActiveType: [ AuthenticatedUser, 'weblogic-jwt-token' ]
+                Authorizer:
+                    XACMLAuthorizer:
+                        XACMLAuthorizer:
+                            PolicyDeploymentEnabled: true
+                CertPathProvider:
+                    WebLogicCertPathProvider:
+                        WebLogicCertPathProvider:
+                CredentialMapper:
+                    DefaultCredentialMapper:
+                        DefaultCredentialMapper:
+                PasswordValidator:
+                    SystemPasswordValidator:
+                        SystemPasswordValidator:
+                RoleMapper:
+                    XACMLRoleMapper:
+                        XACMLRoleMapper:
+resources:
+    JDBCSystemResource:
+        C71RADO_DATA:
+            Target: AdminServer
+            DescriptorFileName: 'jdbc/C71RADO_DATA-4178-jdbc.xml'
+            JdbcResource:
+                DatasourceType: GENERIC
+                JDBCConnectionPoolParams:
+                    StatementCacheSize: 10
+                    InitialCapacity: 1
+                    MinCapacity: 1
+                    TestTableName: SQL SELECT 1 FROM CSBA_POOLS
+                    StatementCacheType: LRU
+                    MaxCapacity: 15
+                JDBCDataSourceParams:
+                    GlobalTransactionsProtocol: TwoPhaseCommit
+                    JNDIName: deltek.enterprise.jdbc.C71RADO_DATA
+                JDBCDriverParams:
+                    URL: 'jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=ASHP0025)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=C71RADO18)))'
+                    PasswordEncrypted: 'fake1234'
+                    DriverName: oracle.jdbc.xa.client.OracleXADataSource
+                    Properties:
+                        user:
+                            Value: DELTEK
+appDeployments:
+    Application:
+        EnterpriseApplication2:
+            SourcePath: '/u01/oracle/user_projects/domains/deltek-enterprise2/wlsdeploy/applications/EnterpriseApplication2.ear'
+            ModuleType: ear
+            StagingMode: nostage
